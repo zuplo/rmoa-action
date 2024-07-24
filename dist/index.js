@@ -25233,10 +25233,10 @@ async function run() {
                     core.setFailed(`Failed to parse OpenAPI lint results. Error: ${error}`);
                 }
             }
-            const summary = core.summary.addHeading(`RMOA lint summary`, 2);
+            const summary = core.summary.addHeading(`RMOA lint report`, 2);
             summary
                 .addRaw(`<p>`)
-                .addRaw(`The following table provides a brief summary of the lint results for <strong>${openApiFilePath}</strong>.\n`)
+                .addRaw(`The overall score is <strong>${report.results.simpleReport.score}</strong>. The following table provides a breakdown of the lint results per category for <strong>${openApiFilePath}</strong>.\n`)
                 .addRaw('</p>');
             summary
                 .addRaw('<p>')
@@ -25245,11 +25245,6 @@ async function run() {
                     { data: 'Category', header: true },
                     { data: 'Score', header: true },
                     { data: 'Issues', header: true }
-                ],
-                [
-                    { data: 'Overall' },
-                    { data: report.results.simpleReport.score.toString() },
-                    { data: report.results.fullReport.issues.length.toString() }
                 ],
                 [
                     { data: 'Docs' },
@@ -25279,7 +25274,8 @@ async function run() {
                 .addRaw('</p>');
             summary
                 .addRaw('<p> ')
-                .addDetails('Summary', report.results.simpleReport.shortSummary)
+                .addRaw(report.results.simpleReport.shortSummary)
+                .addBreak()
                 .addDetails('Advice', report.results.simpleReport.longSummary)
                 .addRaw('</p>');
             summary.addBreak();

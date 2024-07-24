@@ -84,11 +84,11 @@ export async function run(): Promise<void> {
         }
       }
 
-      const summary = core.summary.addHeading(`RMOA lint summary`, 2)
+      const summary = core.summary.addHeading(`RMOA lint report`, 2)
       summary
         .addRaw(`<p>`)
         .addRaw(
-          `The following table provides a brief summary of the lint results for <strong>${openApiFilePath}</strong>.\n`
+          `The overall score is <strong>${report.results.simpleReport.score}</strong>. The following table provides a breakdown of the lint results per category for <strong>${openApiFilePath}</strong>.\n`
         )
         .addRaw('</p>')
 
@@ -99,11 +99,6 @@ export async function run(): Promise<void> {
             { data: 'Category', header: true },
             { data: 'Score', header: true },
             { data: 'Issues', header: true }
-          ],
-          [
-            { data: 'Overall' },
-            { data: report.results.simpleReport.score.toString() },
-            { data: report.results.fullReport.issues.length.toString() }
           ],
           [
             { data: 'Docs' },
@@ -134,7 +129,8 @@ export async function run(): Promise<void> {
 
       summary
         .addRaw('<p> ')
-        .addDetails('Summary', report.results.simpleReport.shortSummary)
+        .addRaw(report.results.simpleReport.shortSummary)
+        .addBreak()
         .addDetails('Advice', report.results.simpleReport.longSummary)
         .addRaw('</p>')
 
