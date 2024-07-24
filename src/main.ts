@@ -90,48 +90,54 @@ export async function run(): Promise<void> {
         .addRaw(
           `The following table provides a brief summary of the lint results for <strong>${openApiFilePath}</strong>.\n`
         )
-        .addDetails('Summary', report.results.simpleReport.longSummary)
         .addRaw('</p>')
 
-      summary.addRaw('<p>')
-      summary.addTable([
-        [
-          { data: 'Category', header: true },
-          { data: 'Score', header: true },
-          { data: 'Issues', header: true }
-        ],
-        [
-          { data: 'Overall' },
-          { data: report.results.simpleReport.score.toString() },
-          { data: report.results.fullReport.issues.length.toString() }
-        ],
-        [
-          { data: 'Docs' },
-          { data: report.results.simpleReport.docsScore.toString() },
-          { data: report.results.fullReport.docsIssues.length.toString() }
-        ],
-        [
-          { data: 'Completeness' },
-          { data: report.results.simpleReport.completenessScore.toString() },
-          {
-            data: report.results.fullReport.completenessIssues.length.toString()
-          }
-        ],
-        [
-          { data: 'SDK Generation' },
-          { data: report.results.simpleReport.sdkGenerationScore.toString() },
-          {
-            data: report.results.fullReport.sdkGenerationIssues.length.toString()
-          }
-        ],
-        [
-          { data: 'Security' },
-          { data: report.results.simpleReport.securityScore.toString() },
-          { data: report.results.fullReport.securityIssues.length.toString() }
-        ]
-      ])
+      summary
+        .addRaw('<p>')
+        .addTable([
+          [
+            { data: 'Category', header: true },
+            { data: 'Score', header: true },
+            { data: 'Issues', header: true }
+          ],
+          [
+            { data: 'Overall' },
+            { data: report.results.simpleReport.score.toString() },
+            { data: report.results.fullReport.issues.length.toString() }
+          ],
+          [
+            { data: 'Docs' },
+            { data: report.results.simpleReport.docsScore.toString() },
+            { data: report.results.fullReport.docsIssues.length.toString() }
+          ],
+          [
+            { data: 'Completeness' },
+            { data: report.results.simpleReport.completenessScore.toString() },
+            {
+              data: report.results.fullReport.completenessIssues.length.toString()
+            }
+          ],
+          [
+            { data: 'SDK Generation' },
+            { data: report.results.simpleReport.sdkGenerationScore.toString() },
+            {
+              data: report.results.fullReport.sdkGenerationIssues.length.toString()
+            }
+          ],
+          [
+            { data: 'Security' },
+            { data: report.results.simpleReport.securityScore.toString() },
+            { data: report.results.fullReport.securityIssues.length.toString() }
+          ]
+        ])
+        .addRaw('</p>')
 
-      summary.addRaw('</p>')
+      summary
+        .addRaw('<p> ')
+        .addDetails('Summary', report.results.simpleReport.shortSummary)
+        .addDetails('Advice', report.results.simpleReport.longSummary)
+        .addRaw('</p>')
+
       summary.addBreak()
       summary.addRaw(
         `View details of your report at <a href="${report.reportUrl}">${report.reportUrl}</a>.\n`

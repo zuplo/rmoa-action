@@ -25237,10 +25237,10 @@ async function run() {
             summary
                 .addRaw(`<p>`)
                 .addRaw(`The following table provides a brief summary of the lint results for <strong>${openApiFilePath}</strong>.\n`)
-                .addDetails('Summary', report.results.simpleReport.longSummary)
                 .addRaw('</p>');
-            summary.addRaw('<p>');
-            summary.addTable([
+            summary
+                .addRaw('<p>')
+                .addTable([
                 [
                     { data: 'Category', header: true },
                     { data: 'Score', header: true },
@@ -25275,8 +25275,13 @@ async function run() {
                     { data: report.results.simpleReport.securityScore.toString() },
                     { data: report.results.fullReport.securityIssues.length.toString() }
                 ]
-            ]);
-            summary.addRaw('</p>');
+            ])
+                .addRaw('</p>');
+            summary
+                .addRaw('<p> ')
+                .addDetails('Summary', report.results.simpleReport.shortSummary)
+                .addDetails('Advice', report.results.simpleReport.longSummary)
+                .addRaw('</p>');
             summary.addBreak();
             summary.addRaw(`View details of your report at <a href="${report.reportUrl}">${report.reportUrl}</a>.\n`);
             await summary.write();
