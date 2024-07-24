@@ -1,21 +1,21 @@
 {
-  "name": "typescript-action",
-  "description": "GitHub Actions TypeScript template",
+  "name": "rmoa-linter",
+  "description": "GitHub Action to run RMOA lint rules on an OpenAPI spec",
   "version": "0.0.0",
   "author": "",
   "private": true,
-  "homepage": "https://github.com/actions/typescript-action",
+  "homepage": "https://github.com/zuplo/rmoa-linter",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/actions/typescript-action.git"
+    "url": "git+https://github.com/zuplo/rmoa-linter.git"
   },
   "bugs": {
-    "url": "https://github.com/actions/typescript-action/issues"
+    "url": "https://github.com/zuplo/rmoa-linter/issues"
   },
   "keywords": [
     "actions",
-    "node",
-    "setup"
+    "rmoa",
+    "openapi"
   ],
   "exports": {
     ".": "./dist/index.js"
