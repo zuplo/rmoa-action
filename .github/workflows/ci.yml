@@ -57,7 +57,5 @@ jobs:
         id: test-action
         uses: ./
         with:
-          filepath: "./__tests__/testapi-oas.json"
+          filepath: './__tests__/testapi-oas.json'
           apikey: ${{ secrets.RMOA_API_KEY }}
-
-
