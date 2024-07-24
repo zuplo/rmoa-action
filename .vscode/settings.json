@@ -1,0 +1,38 @@
+{
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.formatOnSaveMode": "file",
+  "editor.formatOnSave": true,
+  "editor.wordWrapColumn": 120,
+  "editor.tabSize": 2,
+  "editor.rulers": [
+    {
+      "column": 120,
+      "color": "#414141"
+    }
+  ],
+  "npm.packageManager": "npm",
+  "typescript.preferences.importModuleSpecifier": "relative",
+  "search.exclude": {
+    "**/node_modules": true,
+    "**/bower_components": true,
+    "**/*.code-search": true,
+    "**/dist": true
+  },
+  "files.associations": {
+    ".env": "ini",
+    ".env.example": "ini"
+  },
+  "yaml.schemas": {
+    "https://json.schemastore.org/github-workflow.json": ".github/workflows/**/*.yaml"
+  },
+  "typescript.tsdk": "./node_modules/typescript/lib",
+  "typescript.validate.enable": true,
+  "workbench.colorCustomizations": {
+    "titleBar.activeBackground": "#f98c61",
+    "titleBar.activeForeground": "#15202b",
+    "titleBar.inactiveBackground": "#f98c61",
+    "titleBar.inactiveForeground": "#15202b99",
+    "statusBar.background": "#f98c61",
+    "statusBar.foreground": "#15202b99"
+  }
+}
