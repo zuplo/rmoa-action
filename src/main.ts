@@ -129,7 +129,7 @@ export async function run(): Promise<void> {
 
       summary
         .addRaw('<p> ')
-        .addRaw(report.results.simpleReport.shortSummary)
+        .addDetails('Summary', report.results.simpleReport.shortSummary)
         .addBreak()
         .addDetails('Advice', report.results.simpleReport.longSummary)
         .addRaw('</p>')
