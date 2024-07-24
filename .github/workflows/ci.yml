@@ -45,7 +45,7 @@ jobs:
         run: npm run ci-test
 
   test-action:
-    name: Rate My Open API lint summary
+    name: RMOA linter
     runs-on: ubuntu-latest
 
     steps:

@@ -25237,9 +25237,9 @@ async function run() {
             const summary = core.summary.addHeading(`RMOA lint summary`);
             summary
                 .addRaw(`<p>`)
-                .addRaw(`The following table provides a brief summary of the lint results for <strong>${openApiFilePath}</strong>.`)
+                .addRaw(`The following table provides a brief summary of the lint results for <strong>${openApiFilePath}</strong>.\n`)
                 .addBreak()
-                .addRaw(`${report.results.simpleReport.longSummary}`)
+                .addDetails('Summary', report.results.simpleReport.longSummary)
                 .addBreak()
                 .addRaw('</p>');
             summary.addRaw('<p>');
@@ -25280,6 +25280,7 @@ async function run() {
                 ]
             ]);
             summary.addRaw('</p>');
+            summary.addBreak();
             summary.addRaw(`View details of your report at <a href="${report.reportUrl}">${report.reportUrl}</a>.\n`);
             await summary.write();
         }
