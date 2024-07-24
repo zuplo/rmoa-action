@@ -25275,7 +25275,6 @@ async function run() {
             summary
                 .addRaw('<p> ')
                 .addDetails('Summary', report.results.simpleReport.shortSummary)
-                .addBreak()
                 .addDetails('Advice', report.results.simpleReport.longSummary)
                 .addRaw('</p>');
             summary.addBreak();
