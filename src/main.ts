@@ -1,5 +1,9 @@
 import * as core from '@actions/core'
-import { wait } from './wait'
+import { existsSync } from 'node:fs'
+import { readFile } from 'node:fs/promises'
+import { lookup } from 'mime-types'
+import { APIResponse } from './interfaces'
+import { ApiError } from '@zuplo/errors'
 
 /**
  * The main function for the action.
@@ -7,20 +11,116 @@ import { wait } from './wait'
  */
 export async function run(): Promise<void> {
   try {
-    const ms: string = core.getInput('milliseconds')
+    const openApiFilePath: string = core.getInput('filepath')
+    const apikey: string = core.getInput('apikey')
 
-    // Debug logs are only output if the `ACTIONS_STEP_DEBUG` secret is true
-    core.debug(`Waiting ${ms} milliseconds ...`)
+    if (!existsSync(openApiFilePath)) {
+      core.setFailed(
+        `The Open API file path provided does not exist: ${openApiFilePath}. Please specify an existing Open API file and try again.`
+      )
+    }
 
-    // Log the current timestamp, wait, then log the new timestamp
-    core.debug(new Date().toTimeString())
-    await wait(parseInt(ms, 10))
-    core.debug(new Date().toTimeString())
+    // Read the file as a buffer
+    const data = await readFile(openApiFilePath, 'utf-8')
 
-    // Set outputs for other workflow steps to use
-    core.setOutput('time', new Date().toTimeString())
+    // Convert the buffer to a Blob
+    const lookuptMimeType = lookup(openApiFilePath)
+    const file = new Blob([data], {
+      type: typeof lookuptMimeType === 'string' ? lookuptMimeType : undefined
+    })
+    const formData = new FormData()
+    formData.set('apiFile', file, openApiFilePath)
+
+    try {
+      const fileUploadResults = await fetch(
+        `https://api.ratemyopenapi.com/sync-report`,
+        {
+          method: 'POST',
+          body: formData,
+          headers: {
+            Authorization: `Bearer ${apikey}`
+          }
+        }
+      )
+
+      if (fileUploadResults.status !== 200) {
+        const error = (await fileUploadResults.json()) as ApiError
+        core.setFailed(`${error.detail ?? error.message}`)
+      }
+
+      const report = (await fileUploadResults.json()) as APIResponse
+
+      try {
+        for (const issue of report.results.fullReport.issues) {
+          core.debug(`${openApiFilePath}`)
+
+          if (issue.severity === 0) {
+            core.error(issue.message, {
+              file: openApiFilePath,
+              startLine: issue.range.start.line,
+              startColumn: issue.range.start.character,
+              endLine: issue.range.end.line,
+              endColumn: issue.range.end.character
+            })
+          } else {
+            core.warning(issue.message, {
+              file: openApiFilePath,
+              startLine: issue.range.start.line,
+              startColumn: issue.range.start.character,
+              endLine: issue.range.end.line,
+              endColumn: issue.range.end.character
+            })
+          }
+        }
+      } catch (error) {
+        if (error instanceof Error) {
+          core.setFailed(
+            `Failed to parse OpenAPI lint results. Error: ${error.message}`
+          )
+        } else {
+          core.setFailed(
+            `Failed to parse OpenAPI lint results. Error: ${error as string}`
+          )
+        }
+      }
+
+      // @TODO better summary
+      const summary = core.summary.addHeading(
+        `RMOA lint results for '${openApiFilePath}'`
+      )
+      summary.addDetails(
+        'Overall',
+        report.results.simpleReport.score.toString()
+      )
+      summary.addDetails(
+        'Docs',
+        report.results.simpleReport.docsScore.toString()
+      )
+      summary.addDetails(
+        'Completeness',
+        report.results.simpleReport.completenessScore.toString()
+      )
+      summary.addDetails(
+        'SDK Generation',
+        report.results.simpleReport.sdkGenerationScore.toString()
+      )
+      summary.addDetails(
+        'Security',
+        report.results.simpleReport.securityScore.toString()
+      )
+      await summary.write()
+    } catch (error) {
+      if (error instanceof Error) {
+        core.setFailed(`fail: ${error.message}`)
+      } else {
+        core.setFailed(`fail: ${error as string}`)
+      }
+    }
   } catch (error) {
-    // Fail the workflow run if an error occurs
-    if (error instanceof Error) core.setFailed(error.message)
+    if (error instanceof Error) {
+      core.setFailed(`fail: ${error.message}`)
+    } else {
+      core.setFailed(`fail: ${error as string}`)
+    }
   }
 }

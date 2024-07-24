@@ -57,8 +57,7 @@ jobs:
         id: test-action
         uses: ./
         with:
-          milliseconds: 2000
+          filepath: "./__tests__/testapi-oas.json"
+          apikey: ${{ secrets.RMOA_API_KEY }}
 
-      - name: Print Output
-        id: output
-        run: echo "${{ steps.test-action.outputs.time }}"
+
