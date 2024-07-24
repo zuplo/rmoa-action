@@ -25203,7 +25203,7 @@ async function run() {
             }
             const report = (await fileUploadResults.json());
             try {
-                report.results.fullReport.issues.forEach(issue => {
+                for (const issue of report.results.fullReport.issues) {
                     core.debug(`${openApiFilePath}`);
                     if (issue.severity === 0) {
                         core.error(issue.message, {
@@ -25223,7 +25223,7 @@ async function run() {
                             endColumn: issue.range.end.character
                         });
                     }
-                });
+                }
             }
             catch (error) {
                 if (error instanceof Error) {
@@ -25234,12 +25234,30 @@ async function run() {
                 }
             }
             // @TODO better summary
-            const summary = core.summary.addHeading(`RMOA lint results for '${openApiFilePath}'`);
-            summary.addDetails('Overall', report.results.simpleReport.score.toString());
-            summary.addDetails('Docs', report.results.simpleReport.docsScore.toString());
-            summary.addDetails('Completeness', report.results.simpleReport.completenessScore.toString());
-            summary.addDetails('SDK Generation', report.results.simpleReport.sdkGenerationScore.toString());
-            summary.addDetails('Security', report.results.simpleReport.securityScore.toString());
+            const summary = core.summary.addHeading(`Results for: ${openApiFilePath}`);
+            core.summary.addList([
+                `Overall: ${report.results.simpleReport.score}`,
+                `Docs:  ${report.results.simpleReport.docsScore}`,
+                `Completeness: ${report.results.simpleReport.completenessScore}`,
+                `SDK Generation: ${report.results.simpleReport.sdkGenerationScore}`,
+                `Security: ${report.results.simpleReport.securityScore}`
+            ]);
+            core.summary.addTable([
+                [
+                    { data: 'Overall', header: true },
+                    { data: 'Docs', header: true },
+                    { data: 'Completeness', header: true },
+                    { data: 'SDK Generation', header: true },
+                    { data: 'Security', header: true }
+                ],
+                [
+                    { data: report.results.simpleReport.score.toString() },
+                    { data: report.results.simpleReport.docsScore.toString() },
+                    { data: report.results.simpleReport.completenessScore.toString() },
+                    { data: report.results.simpleReport.sdkGenerationScore.toString() },
+                    { data: report.results.simpleReport.securityScore.toString() }
+                ]
+            ]);
             await summary.write();
         }
         catch (error) {

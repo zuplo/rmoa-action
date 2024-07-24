@@ -86,15 +86,30 @@ export async function run(): Promise<void> {
 
       // @TODO better summary
 
-      const summary = core.summary.addHeading(
-        `RMOA lint results for '${openApiFilePath}'`
-      )
+      const summary = core.summary.addHeading(`Results for: ${openApiFilePath}`)
       core.summary.addList([
         `Overall: ${report.results.simpleReport.score}`,
         `Docs:  ${report.results.simpleReport.docsScore}`,
         `Completeness: ${report.results.simpleReport.completenessScore}`,
         `SDK Generation: ${report.results.simpleReport.sdkGenerationScore}`,
         `Security: ${report.results.simpleReport.securityScore}`
+      ])
+
+      core.summary.addTable([
+        [
+          { data: 'Overall', header: true },
+          { data: 'Docs', header: true },
+          { data: 'Completeness', header: true },
+          { data: 'SDK Generation', header: true },
+          { data: 'Security', header: true }
+        ],
+        [
+          { data: report.results.simpleReport.score.toString() },
+          { data: report.results.simpleReport.docsScore.toString() },
+          { data: report.results.simpleReport.completenessScore.toString() },
+          { data: report.results.simpleReport.sdkGenerationScore.toString() },
+          { data: report.results.simpleReport.securityScore.toString() }
+        ]
       ])
 
       await summary.write()

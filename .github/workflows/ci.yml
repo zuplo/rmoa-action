@@ -45,7 +45,7 @@ jobs:
         run: npm run ci-test
 
   test-action:
-    name: GitHub Actions Test
+    name: Rate My Open API lint summary
     runs-on: ubuntu-latest
 
     steps:
