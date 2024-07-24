@@ -87,15 +87,7 @@ export async function run(): Promise<void> {
       // @TODO better summary
 
       const summary = core.summary.addHeading(`Results for: ${openApiFilePath}`)
-      core.summary.addList([
-        `Overall: ${report.results.simpleReport.score}`,
-        `Docs:  ${report.results.simpleReport.docsScore}`,
-        `Completeness: ${report.results.simpleReport.completenessScore}`,
-        `SDK Generation: ${report.results.simpleReport.sdkGenerationScore}`,
-        `Security: ${report.results.simpleReport.securityScore}`
-      ])
-
-      core.summary.addTable([
+      summary.addTable([
         [
           { data: 'Overall', header: true },
           { data: 'Docs', header: true },
@@ -111,6 +103,10 @@ export async function run(): Promise<void> {
           { data: report.results.simpleReport.securityScore.toString() }
         ]
       ])
+
+      summary.addRaw(
+        `View details of your report at [${report.reportUrl}](${report.reportUrl})\n`
+      )
 
       await summary.write()
     } catch (error) {
