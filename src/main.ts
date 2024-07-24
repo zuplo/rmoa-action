@@ -86,7 +86,16 @@ export async function run(): Promise<void> {
 
       // @TODO better summary
 
-      const summary = core.summary.addHeading(`Results for: ${openApiFilePath}`)
+      const summary = core.summary.addHeading(`RMOA lint summary`)
+      summary
+        .addRaw(`<p>`)
+        .addRaw(`The following table provides a brief summary the lint results for <strong>${openApiFilePath}</strong>.`)
+        .addBreak()
+        .addRaw(`${report.results.simpleReport.shortSummary}`)
+        .addBreak()
+        .addRaw('</p>')
+
+      summary.addRaw('<p>')
       summary.addTable([
         [
           { data: 'Overall', header: true },
@@ -104,8 +113,9 @@ export async function run(): Promise<void> {
         ]
       ])
 
+      summary.addRaw('</p>')
       summary.addRaw(
-        `View details of your report at [${report.reportUrl}](${report.reportUrl})\n`
+        `View details of your report at <a href="${report.reportUrl}">${report.reportUrl}</a>.\n`
       )
 
       await summary.write()
