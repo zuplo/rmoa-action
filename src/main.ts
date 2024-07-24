@@ -84,17 +84,13 @@ export async function run(): Promise<void> {
         }
       }
 
-      // @TODO better summary
-
-      const summary = core.summary.addHeading(`RMOA lint summary`)
+      const summary = core.summary.addHeading(`RMOA lint summary`, 2)
       summary
         .addRaw(`<p>`)
         .addRaw(
           `The following table provides a brief summary of the lint results for <strong>${openApiFilePath}</strong>.\n`
         )
-        .addBreak()
         .addDetails('Summary', report.results.simpleReport.longSummary)
-        .addBreak()
         .addRaw('</p>')
 
       summary.addRaw('<p>')
