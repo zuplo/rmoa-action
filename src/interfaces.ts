@@ -1,3 +1,21 @@
+interface RMOAIssue {
+  code: string
+  message: string
+  path: string[]
+  severity: number
+  source: string
+  range: {
+    start: {
+      line: number
+      character: number
+    }
+    end: {
+      line: number
+      character: number
+    }
+  }
+}
+
 export interface APIResponse {
   results: {
     simpleReport: {
@@ -13,23 +31,11 @@ export interface APIResponse {
       longSummary: string
     }
     fullReport: {
-      issues: {
-        code: string
-        message: string
-        path: string[]
-        severity: number
-        source: string
-        range: {
-          start: {
-            line: number
-            character: number
-          }
-          end: {
-            line: number
-            character: number
-          }
-        }
-      }[]
+      issues: RMOAIssue[]
+      docsIssues: RMOAIssue[]
+      completenessIssues: RMOAIssue[]
+      sdkGenerationIssues: RMOAIssue[]
+      securityIssues: RMOAIssue[]
     }
   }
   reportId: string

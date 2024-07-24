@@ -25237,26 +25237,46 @@ async function run() {
             const summary = core.summary.addHeading(`RMOA lint summary`);
             summary
                 .addRaw(`<p>`)
-                .addRaw(`The following table provides a brief summary the lint results for <strong>${openApiFilePath}</strong>.`)
+                .addRaw(`The following table provides a brief summary of the lint results for <strong>${openApiFilePath}</strong>.`)
                 .addBreak()
-                .addRaw(`${report.results.simpleReport.shortSummary}`)
+                .addRaw(`${report.results.simpleReport.longSummary}`)
                 .addBreak()
                 .addRaw('</p>');
             summary.addRaw('<p>');
             summary.addTable([
                 [
-                    { data: 'Overall', header: true },
-                    { data: 'Docs', header: true },
-                    { data: 'Completeness', header: true },
-                    { data: 'SDK Generation', header: true },
-                    { data: 'Security', header: true }
+                    { data: 'Category', header: true },
+                    { data: 'Score', header: true },
+                    { data: 'Issues', header: true }
                 ],
                 [
+                    { data: 'Overall' },
                     { data: report.results.simpleReport.score.toString() },
+                    { data: report.results.fullReport.issues.length.toString() }
+                ],
+                [
+                    { data: 'Docs' },
                     { data: report.results.simpleReport.docsScore.toString() },
+                    { data: report.results.fullReport.docsIssues.length.toString() }
+                ],
+                [
+                    { data: 'Completeness' },
                     { data: report.results.simpleReport.completenessScore.toString() },
+                    {
+                        data: report.results.fullReport.completenessIssues.length.toString()
+                    }
+                ],
+                [
+                    { data: 'SDK Generation' },
                     { data: report.results.simpleReport.sdkGenerationScore.toString() },
-                    { data: report.results.simpleReport.securityScore.toString() }
+                    {
+                        data: report.results.fullReport.sdkGenerationIssues.length.toString()
+                    }
+                ],
+                [
+                    { data: 'Security' },
+                    { data: report.results.simpleReport.securityScore.toString() },
+                    { data: report.results.fullReport.securityIssues.length.toString() }
                 ]
             ]);
             summary.addRaw('</p>');
