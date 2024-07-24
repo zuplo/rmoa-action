@@ -1,5 +1,9 @@
 import * as core from '@actions/core'
-import { wait } from './wait'
+import { existsSync } from 'node:fs'
+import { readFile } from 'node:fs/promises'
+import { lookup } from 'mime-types'
+import { APIResponse } from './interfaces'
+import { ApiError } from '@zuplo/errors'
 
 /**
  * The main function for the action.
@@ -7,20 +11,146 @@ import { wait } from './wait'
  */
 export async function run(): Promise<void> {
   try {
-    const ms: string = core.getInput('milliseconds')
+    const openApiFilePath: string = core.getInput('filepath')
+    const apikey: string = core.getInput('apikey')
 
-    // Debug logs are only output if the `ACTIONS_STEP_DEBUG` secret is true
-    core.debug(`Waiting ${ms} milliseconds ...`)
+    if (!existsSync(openApiFilePath)) {
+      core.setFailed(
+        `The Open API file path provided does not exist: ${openApiFilePath}. Please specify an existing Open API file and try again.`
+      )
+    }
 
-    // Log the current timestamp, wait, then log the new timestamp
-    core.debug(new Date().toTimeString())
-    await wait(parseInt(ms, 10))
-    core.debug(new Date().toTimeString())
+    // Read the file as a buffer
+    const data = await readFile(openApiFilePath, 'utf-8')
 
-    // Set outputs for other workflow steps to use
-    core.setOutput('time', new Date().toTimeString())
+    // Convert the buffer to a Blob
+    const lookuptMimeType = lookup(openApiFilePath)
+    const file = new Blob([data], {
+      type: typeof lookuptMimeType === 'string' ? lookuptMimeType : undefined
+    })
+    const formData = new FormData()
+    formData.set('apiFile', file, openApiFilePath)
+
+    try {
+      const fileUploadResults = await fetch(
+        `https://api.ratemyopenapi.com/sync-report`,
+        {
+          method: 'POST',
+          body: formData,
+          headers: {
+            Authorization: `Bearer ${apikey}`
+          }
+        }
+      )
+
+      if (fileUploadResults.status !== 200) {
+        const error = (await fileUploadResults.json()) as ApiError
+        core.setFailed(`${error.detail ?? error.message}`)
+      }
+
+      const report = (await fileUploadResults.json()) as APIResponse
+
+      try {
+        for (const issue of report.results.fullReport.issues) {
+          core.debug(`${openApiFilePath}`)
+
+          if (issue.severity === 0) {
+            core.error(issue.message, {
+              file: openApiFilePath,
+              startLine: issue.range.start.line,
+              startColumn: issue.range.start.character,
+              endLine: issue.range.end.line,
+              endColumn: issue.range.end.character
+            })
+          } else {
+            core.warning(issue.message, {
+              file: openApiFilePath,
+              startLine: issue.range.start.line,
+              startColumn: issue.range.start.character,
+              endLine: issue.range.end.line,
+              endColumn: issue.range.end.character
+            })
+          }
+        }
+      } catch (error) {
+        if (error instanceof Error) {
+          core.setFailed(
+            `Failed to parse OpenAPI lint results. Error: ${error.message}`
+          )
+        } else {
+          core.setFailed(
+            `Failed to parse OpenAPI lint results. Error: ${error as string}`
+          )
+        }
+      }
+
+      const summary = core.summary.addHeading(`RMOA lint report`, 2)
+      summary
+        .addRaw(`<p>`)
+        .addRaw(
+          `The overall score is <strong>${report.results.simpleReport.score}</strong>. The following table provides a breakdown of the lint results per category for <strong>${openApiFilePath}</strong>.\n`
+        )
+        .addRaw('</p>')
+
+      summary
+        .addRaw('<p>')
+        .addTable([
+          [
+            { data: 'Category', header: true },
+            { data: 'Score', header: true },
+            { data: 'Issues', header: true }
+          ],
+          [
+            { data: 'Docs' },
+            { data: report.results.simpleReport.docsScore.toString() },
+            { data: report.results.fullReport.docsIssues.length.toString() }
+          ],
+          [
+            { data: 'Completeness' },
+            { data: report.results.simpleReport.completenessScore.toString() },
+            {
+              data: report.results.fullReport.completenessIssues.length.toString()
+            }
+          ],
+          [
+            { data: 'SDK Generation' },
+            { data: report.results.simpleReport.sdkGenerationScore.toString() },
+            {
+              data: report.results.fullReport.sdkGenerationIssues.length.toString()
+            }
+          ],
+          [
+            { data: 'Security' },
+            { data: report.results.simpleReport.securityScore.toString() },
+            { data: report.results.fullReport.securityIssues.length.toString() }
+          ]
+        ])
+        .addRaw('</p>')
+
+      summary
+        .addRaw('<p> ')
+        .addDetails('Summary', report.results.simpleReport.shortSummary)
+        .addDetails('Advice', report.results.simpleReport.longSummary)
+        .addRaw('</p>')
+
+      summary.addBreak()
+      summary.addRaw(
+        `View details of your report at <a href="${report.reportUrl}">${report.reportUrl}</a>.\n`
+      )
+
+      await summary.write()
+    } catch (error) {
+      if (error instanceof Error) {
+        core.setFailed(`fail: ${error.message}`)
+      } else {
+        core.setFailed(`fail: ${error as string}`)
+      }
+    }
   } catch (error) {
-    // Fail the workflow run if an error occurs
-    if (error instanceof Error) core.setFailed(error.message)
+    if (error instanceof Error) {
+      core.setFailed(`fail: ${error.message}`)
+    } else {
+      core.setFailed(`fail: ${error as string}`)
+    }
   }
 }

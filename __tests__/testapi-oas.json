@@ -1,0 +1,296 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Friendbook",
+    "description": "Friendbook API, powered by Zuplo. [Learn More](https://www.facebook.com/Friendbookcom-1453796218267314/)",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://www.example-api.com/"
+    }
+  ],
+  "components": {
+    "schemas": {
+      "friend-list": {
+        "title": "Friends",
+        "type": "array",
+        "items": {
+          "title": "Friend ID",
+          "type": "string",
+          "description": "The person's user ID.",
+          "format": "uuid"
+        },
+        "additionalProperties": false
+      },
+      "message": {
+        "title": "Message",
+        "type": "object",
+        "properties": {
+          "content": {
+            "type": "string"
+          },
+          "recipientID": {
+            "type": "string",
+            "format": "uuid",
+            "description": "The person's user ID."
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "api-key-auth-inbound": {
+        "type": "apiKey",
+        "name": "Authorization",
+        "in": "header",
+        "description": "Must contain the word Bearer followed by the key"
+      }
+    }
+  },
+  "paths": {
+    "/v1/friends/{userID}": {
+      "post": {
+        "responses": {
+          "200": {
+            "description": "Add successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/friend-list"
+              }
+            }
+          },
+          "required": true
+        },
+        "security": [
+          {
+            "api-key-auth-inbound": []
+          }
+        ],
+        "tags": ["Friends"],
+        "summary": "Add Friends",
+        "description": "This API lets you add friends",
+        "parameters": [
+          {
+            "name": "userID",
+            "in": "path",
+            "required": true,
+            "description": "The user's ID",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ]
+      },
+      "get": {
+        "responses": {
+          "200": {
+            "description": "Friends",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "faker": "name.findName"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "5XX": {
+            "description": "Failure",
+            "headers": {
+              "x-vercel-cache": {
+                "schema": {
+                  "type": "string",
+                  "examples": ["MISS", "HIT", "STALE"]
+                },
+                "description": "vercel serverless cache state. see https://vercel.com/docs/concepts/edge-network/caching#x-vercel-cache"
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "api-key-auth-inbound": []
+          }
+        ],
+        "tags": ["Friends"],
+        "summary": "View Friends",
+        "description": "This API lets you view your friends",
+        "parameters": [
+          {
+            "name": "userID",
+            "in": "path",
+            "required": true,
+            "description": "The user's ID",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ]
+      },
+      "delete": {
+        "responses": {
+          "200": {
+            "description": "Delete successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/friend-list"
+              }
+            }
+          },
+          "required": true
+        },
+        "security": [
+          {
+            "api-key-auth-inbound": []
+          }
+        ],
+        "tags": ["Friends"],
+        "summary": "Unfriend",
+        "description": "This API lets you delete friends",
+        "parameters": [
+          {
+            "name": "userID",
+            "in": "path",
+            "required": true,
+            "description": "The user's ID",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ]
+      }
+    },
+    "/v1/messages/{userID}": {
+      "get": {
+        "responses": {
+          "200": {
+            "description": "Messages",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "faker": "hacker.phrase"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "api-key-auth-inbound": []
+          }
+        ],
+        "tags": ["Messaging"],
+        "summary": "Get your messages",
+        "description": "Get all of your messages",
+        "parameters": [
+          {
+            "name": "userID",
+            "in": "path",
+            "required": true,
+            "description": "The user's ID",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ]
+      },
+      "post": {
+        "responses": {
+          "200": {
+            "description": "Message send successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/message"
+              }
+            }
+          },
+          "required": true
+        },
+        "security": [
+          {
+            "api-key-auth-inbound": []
+          }
+        ],
+        "tags": ["Messaging"],
+        "summary": "Send a message",
+        "description": "Sends a message to a recipient",
+        "parameters": [
+          {
+            "name": "userID",
+            "in": "path",
+            "required": true,
+            "description": "The user's ID",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ]
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "Friends",
+      "description": "These endpoints help you manage your friends on friendbook."
+    },
+    {
+      "name": "Messaging",
+      "description": "These endpoints help you manage your messages on friendbook."
+    }
+  ]
+}
