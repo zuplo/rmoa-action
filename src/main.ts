@@ -118,57 +118,17 @@ export async function run(): Promise<void> {
         )
         .addRaw('</p>')
 
-      summary.addRaw(
-        `<div style="width:100%;height:100px;"><div style="width:50%;display:inline-block;height:100%;"><img src="https://api.ratemyopenapi.com/svg-generator?score=${report.results.simpleReport.docsScore}" width="100px" style="width:100px;"/></div> <div style="width:30%;display:inline-block;height:100%;font-size:15px;margin-top:25px"><h3>Docs<h3/><p>${report.results.fullReport.docsIssues.length}</p></div>`
-      )
-
-      summary.addRaw(`<div style="display: flex; align-items: center;">
-  <img src="https://api.ratemyopenapi.com/svg-generator?score=${report.results.simpleReport.docsScore}" width="100px" style="width:100px;"/>
-  <p>This is a paragraph next to the image. You can add more text here as needed. The image and the paragraph are displayed side by side.</p>
-</div>`)
-
       summary.addRaw(`<table>
-  <tr>
-    <td>
+  <tr style="border:none">
+    <td style="border:none">
       <img src="https://api.ratemyopenapi.com/svg-generator?score=${report.results.simpleReport.docsScore}" width="100px" style="width:100px;"/>
     </td>
-    <td>
-      <p>This is a paragraph next to the image. You can add more text here as needed. The image and the paragraph are displayed side by side.</p>
+    <td style="border:none">
+      <p><h3>Docs<h3/><span>${report.results.fullReport.docsIssues.length} issues</span></p>
     </td>
   </tr>
 </table>`)
 
-      /*
-      summary
-        .addRaw('<p align="center" style="text-align:center;">')
-        .addTable([
-          [
-            {
-              data: `<img src="https://api.ratemyopenapi.com/svg-generator?score=${report.results.simpleReport.docsScore}" width="100px" style="width:100px;"/>`,
-              header: true
-            },
-            {
-              data: `<img src="https://api.ratemyopenapi.com/svg-generator?score=${report.results.simpleReport.completenessScore}" width="100px" style="width:100px;"/>`,
-              header: true
-            },
-            {
-              data: `<img src="https://api.ratemyopenapi.com/svg-generator?score=${report.results.simpleReport.sdkGenerationScore}" width="100px" style="width:100px;"/>`,
-              header: true
-            },
-            {
-              data: `<img src="https://api.ratemyopenapi.com/svg-generator?score=${report.results.simpleReport.securityScore}" width="100px" style="width:100px;"/>`,
-              header: true
-            }
-          ],
-          [
-            { data: 'Docs' },
-            { data: 'Completeness' },
-            { data: 'SDK Generation' },
-            { data: 'Security' }
-          ]
-        ])
-        .addRaw('</p>')
-*/
       summary
         .addRaw('<p>')
         .addTable([
