@@ -112,14 +112,16 @@ export async function run(): Promise<void> {
           `<img src="https://api.ratemyopenapi.com/svg-generator?score=${report.results.simpleReport.score}" width="150px" style="width:150px;" alt="Overall score is ${report.results.simpleReport.score}"/>`
         )
         .addRaw('</p>')
-        .addRaw(`<p style="margin-top:20px;">`)
+        .addRaw(`<p style="margin-top:20px;margin-bottom:20px;">`)
         .addRaw(
           `The overall score is <strong>${report.results.simpleReport.score}</strong>. The following table provides a breakdown of the lint results per category for <strong>${openApiFilePath}</strong>.\n`
         )
         .addRaw('</p>')
 
       summary
-        .addRaw('<table style="border-collapse: collapse; border: none;">')
+        .addRaw(
+          '<table align="center" style="border-collapse: collapse; border: none;">'
+        )
         .addRaw(
           `<tr style="border:none">
             <td style="border:none">
@@ -161,41 +163,6 @@ export async function run(): Promise<void> {
           </tr>`
         )
         .addRaw('</table>')
-
-      summary
-        .addRaw('<p>')
-        .addTable([
-          [
-            { data: 'Category', header: true },
-            { data: 'Score', header: true },
-            { data: 'Issues', header: true }
-          ],
-          [
-            { data: 'Docs' },
-            { data: report.results.simpleReport.docsScore.toString() },
-            { data: report.results.fullReport.docsIssues.length.toString() }
-          ],
-          [
-            { data: 'Completeness' },
-            { data: report.results.simpleReport.completenessScore.toString() },
-            {
-              data: report.results.fullReport.completenessIssues.length.toString()
-            }
-          ],
-          [
-            { data: 'SDK Generation' },
-            { data: report.results.simpleReport.sdkGenerationScore.toString() },
-            {
-              data: report.results.fullReport.sdkGenerationIssues.length.toString()
-            }
-          ],
-          [
-            { data: 'Security' },
-            { data: report.results.simpleReport.securityScore.toString() },
-            { data: report.results.fullReport.securityIssues.length.toString() }
-          ]
-        ])
-        .addRaw('</p>')
 
       summary
         .addRaw('<p> ')
