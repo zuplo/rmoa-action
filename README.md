@@ -40,6 +40,17 @@ See [action.yml](action.yml)
 
 <!-- end usage -->
 
+**Basic:**
+
+```yaml
+steps:
+  - uses: actions/checkout@v4
+  - uses: zuplo/ramoa-action@v1
+    with:
+      filepath: './my-api.json'
+      apikey: ${{ secrets.RMOA_API_KEY }}
+```
+
 ## License
 
 The scripts and documentation in this project are released under the
