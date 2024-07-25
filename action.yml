@@ -2,6 +2,11 @@ name: 'ramoa-action'
 description: 'GitHub Action to run RMOA lint rules on an OpenAPI spec'
 author: 'Zuplo'
 
+# branding
+branding:
+  icon: check
+  color: white
+
 # Define your inputs here.
 inputs:
   filepath:

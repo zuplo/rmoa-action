@@ -1,4 +1,4 @@
-# Rate My OpenAPI GitHub Action
+# ramoa-action
 
 <p align="center">
   <a href="https://ratemyopenapi.com/">
@@ -7,13 +7,24 @@
   </a>
 </p>
 
+ramoa-action analyzes an OpenAPI definition file using the Rate My OpenAPI API,
+and reports the issues as console output, annotations and action summary.
+
+The goal of ramoa-action is to help you establish best practices for your
+OpenAPI's definitions across multiple categories that include security,
+documentation and more.
+
 This action provides the following functionality for GitHub Actions users:
 
 - Run the Rate My OpenAPI rules on an OpenAPI spec file
 - Get a summary of the the RMOA score in the action output
 - Get annotations on the OpenAPI spec file per run
+- Get a link to a detailed report
 
 ## Usage
+
+Lint & get a score for your OpenAPI definition. You'll need to create a free api
+key at the [Rate My Open API Portal](https://api.ratemyopenapi.com/docs).
 
 See [action.yml](action.yml)
 
