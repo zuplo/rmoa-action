@@ -1,11 +1,6 @@
-name: 'rmoa-linter'
+name: 'ramoa-action'
 description: 'GitHub Action to run RMOA lint rules on an OpenAPI spec'
 author: 'Zuplo'
-
-# Add your action's branding here. This will appear on the GitHub Marketplace.
-branding:
-  icon: 'heart'
-  color: 'red'
 
 # Define your inputs here.
 inputs:

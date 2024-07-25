@@ -1,20 +1,20 @@
 {
-  "name": "rmoa-linter",
+  "name": "ramoa-action",
   "description": "GitHub Action to run RMOA lint rules on an OpenAPI spec",
   "version": "0.0.0",
   "author": "Zuplo",
   "private": true,
-  "homepage": "https://github.com/zuplo/rmoa-linter",
+  "homepage": "https://github.com/zuplo/ramoa-action",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/zuplo/rmoa-linter.git"
+    "url": "git+https://github.com/zuplo/ramoa-action.git"
   },
   "bugs": {
-    "url": "https://github.com/zuplo/rmoa-linter/issues"
+    "url": "https://github.com/zuplo/ramoa-action/issues"
   },
   "keywords": [
     "actions",
-    "rmoa",
+    "ramoa",
     "openapi"
   ],
   "exports": {

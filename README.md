@@ -13,7 +13,7 @@ See [action.yml](action.yml)
 <!-- start usage -->
 
 ```yaml
-- uses: zuplo/rmoa-linter@v1
+- uses: zuplo/ramoa-action@v1
   with:
     # File containing the OpenAPI Spec to be linted.  Examples: my-api.oas.json, api-spec.yaml
     filepath: ''
