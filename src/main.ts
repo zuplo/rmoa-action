@@ -122,6 +122,36 @@ export async function run(): Promise<void> {
         .addRaw('<p>')
         .addTable([
           [
+            {
+              data: `<img src="https://api.ratemyopenapi.com/svg-generator?score=${report.results.simpleReport.docsScore}" width="100px" style="width:100px;"/>`,
+              header: true
+            },
+            {
+              data: `<img src="https://api.ratemyopenapi.com/svg-generator?score=${report.results.simpleReport.completenessScore}" width="100px" style="width:100px;"/>`,
+              header: true
+            },
+            {
+              data: `<img src="https://api.ratemyopenapi.com/svg-generator?score=${report.results.simpleReport.sdkGenerationScore}" width="100px" style="width:100px;"/>`,
+              header: true
+            },
+            {
+              data: `<img src="https://api.ratemyopenapi.com/svg-generator?score=${report.results.simpleReport.securityScore}" width="100px" style="width:100px;"/>`,
+              header: true
+            }
+          ],
+          [
+            { data: 'Docs' },
+            { data: 'Completeness' },
+            { data: 'SDK Generation' },
+            { data: 'Security' }
+          ]
+        ])
+        .addRaw('</p>')
+
+      summary
+        .addRaw('<p>')
+        .addTable([
+          [
             { data: 'Category', header: true },
             { data: 'Score', header: true },
             { data: 'Issues', header: true }
