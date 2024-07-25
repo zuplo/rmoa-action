@@ -118,13 +118,13 @@ export async function run(): Promise<void> {
         )
         .addRaw('</p>')
 
-      summary.addRaw(`<table>
+      summary.addRaw(`<table style="border-collapse: collapse; border: none;">
   <tr style="border:none">
     <td style="border:none">
       <img src="https://api.ratemyopenapi.com/svg-generator?score=${report.results.simpleReport.docsScore}" width="100px" style="width:100px;"/>
     </td>
     <td style="border:none">
-      <p><h3>Docs<h3/><span>${report.results.fullReport.docsIssues.length} issues</span></p>
+      <p><h3>Docs</h3><span>${report.results.fullReport.docsIssues.length} issues</span></p>
     </td>
   </tr>
 </table>`)

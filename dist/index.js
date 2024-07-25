@@ -25259,13 +25259,13 @@ async function run() {
                 .addRaw(`<p style="margin-top:20px;">`)
                 .addRaw(`The overall score is <strong>${report.results.simpleReport.score}</strong>. The following table provides a breakdown of the lint results per category for <strong>${openApiFilePath}</strong>.\n`)
                 .addRaw('</p>');
-            summary.addRaw(`<table>
+            summary.addRaw(`<table style="border-collapse: collapse; border: none;">
   <tr style="border:none">
     <td style="border:none">
       <img src="https://api.ratemyopenapi.com/svg-generator?score=${report.results.simpleReport.docsScore}" width="100px" style="width:100px;"/>
     </td>
     <td style="border:none">
-      <p><h3>Docs<h3/><span>${report.results.fullReport.docsIssues.length} issues</span></p>
+      <p><h3>Docs</h3><span>${report.results.fullReport.docsIssues.length} issues</span></p>
     </td>
   </tr>
 </table>`);
