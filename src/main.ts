@@ -118,6 +118,11 @@ export async function run(): Promise<void> {
         )
         .addRaw('</p>')
 
+      summary.addRaw(
+        `<div style="width:100%;height:100px;"><div style="width:50%;display:inline-block;height:100%;"><img src="https://api.ratemyopenapi.com/svg-generator?score=${report.results.simpleReport.docsScore}" width="100px" style="width:100px;"/></div> <div style="width:30%;display:inline-block;height:100%;font-size:15px;margin-top:25px"><h3>Docs<h3/><p>${report.results.fullReport.docsIssues.length}</p></div>`
+      )
+
+      /*
       summary
         .addRaw('<p align="center" style="text-align:center;">')
         .addTable([
@@ -147,7 +152,7 @@ export async function run(): Promise<void> {
           ]
         ])
         .addRaw('</p>')
-
+*/
       summary
         .addRaw('<p>')
         .addTable([

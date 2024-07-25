@@ -25259,35 +25259,38 @@ async function run() {
                 .addRaw(`<p style="margin-top:20px;">`)
                 .addRaw(`The overall score is <strong>${report.results.simpleReport.score}</strong>. The following table provides a breakdown of the lint results per category for <strong>${openApiFilePath}</strong>.\n`)
                 .addRaw('</p>');
+            summary.addRaw(`<div style="width:100%;height:100px;"><div style="width:50%;display:inline-block;height:100%;"><img src="https://api.ratemyopenapi.com/svg-generator?score=${report.results.simpleReport.docsScore}" width="100px" style="width:100px;"/></div> <div style="width:30%;display:inline-block;height:100%;font-size:15px;margin-top:25px"><h3>Docs<h3/><p>${report.results.fullReport.docsIssues.length}</p></div>`);
+            /*
             summary
-                .addRaw('<p align="center" style="text-align:center;">')
-                .addTable([
+              .addRaw('<p align="center" style="text-align:center;">')
+              .addTable([
                 [
-                    {
-                        data: `<img src="https://api.ratemyopenapi.com/svg-generator?score=${report.results.simpleReport.docsScore}" width="100px" style="width:100px;"/>`,
-                        header: true
-                    },
-                    {
-                        data: `<img src="https://api.ratemyopenapi.com/svg-generator?score=${report.results.simpleReport.completenessScore}" width="100px" style="width:100px;"/>`,
-                        header: true
-                    },
-                    {
-                        data: `<img src="https://api.ratemyopenapi.com/svg-generator?score=${report.results.simpleReport.sdkGenerationScore}" width="100px" style="width:100px;"/>`,
-                        header: true
-                    },
-                    {
-                        data: `<img src="https://api.ratemyopenapi.com/svg-generator?score=${report.results.simpleReport.securityScore}" width="100px" style="width:100px;"/>`,
-                        header: true
-                    }
+                  {
+                    data: `<img src="https://api.ratemyopenapi.com/svg-generator?score=${report.results.simpleReport.docsScore}" width="100px" style="width:100px;"/>`,
+                    header: true
+                  },
+                  {
+                    data: `<img src="https://api.ratemyopenapi.com/svg-generator?score=${report.results.simpleReport.completenessScore}" width="100px" style="width:100px;"/>`,
+                    header: true
+                  },
+                  {
+                    data: `<img src="https://api.ratemyopenapi.com/svg-generator?score=${report.results.simpleReport.sdkGenerationScore}" width="100px" style="width:100px;"/>`,
+                    header: true
+                  },
+                  {
+                    data: `<img src="https://api.ratemyopenapi.com/svg-generator?score=${report.results.simpleReport.securityScore}" width="100px" style="width:100px;"/>`,
+                    header: true
+                  }
                 ],
                 [
-                    { data: 'Docs' },
-                    { data: 'Completeness' },
-                    { data: 'SDK Generation' },
-                    { data: 'Security' }
+                  { data: 'Docs' },
+                  { data: 'Completeness' },
+                  { data: 'SDK Generation' },
+                  { data: 'Security' }
                 ]
-            ])
-                .addRaw('</p>');
+              ])
+              .addRaw('</p>')
+      */
             summary
                 .addRaw('<p>')
                 .addTable([
