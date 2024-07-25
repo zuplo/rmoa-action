@@ -59,3 +59,6 @@ jobs:
         with:
           filepath: './__tests__/testapi-oas.json'
           apikey: ${{ secrets.RMOA_API_KEY }}
+          max-warnings: '57'
+          max-errors: '0'
+          minimum-score: '60'
