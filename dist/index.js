@@ -25260,7 +25260,7 @@ async function run() {
                 .addRaw(`The overall score is <strong>${report.results.simpleReport.score}</strong>. The following table provides a breakdown of the lint results per category for <strong>${openApiFilePath}</strong>.\n`)
                 .addRaw('</p>');
             summary
-                .addRaw('<p>')
+                .addRaw('<p align="center" style="text-align:center;">')
                 .addTable([
                 [
                     {

@@ -119,7 +119,7 @@ export async function run(): Promise<void> {
         .addRaw('</p>')
 
       summary
-        .addRaw('<p>')
+        .addRaw('<p align="center" style="text-align:center;">')
         .addTable([
           [
             {
