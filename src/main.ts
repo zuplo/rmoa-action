@@ -100,7 +100,7 @@ export async function run(): Promise<void> {
 
       if (totalErrors > 0 || totalWarnings > 0) {
         const totalProblems = totalErrors + totalWarnings
-        core.debug(
+        core.info(
           `${failMark} ${totalProblems} problems (${totalErrors} errors, ${totalWarnings} warnings)`
         )
       }
