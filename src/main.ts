@@ -100,7 +100,7 @@ export async function run(): Promise<void> {
       const summary = core.summary.addHeading(`RMOA lint report`, 2)
       summary
         .addRaw(
-          `<img src=\"https://api.ratemyopenapi.com/svg-generator?score=${report.results.simpleReport.score}\" width="150px" style="width:150px;display: block;margin: 0 auto;"/>`
+          `<p style="text-align:center;"><img src=\"https://api.ratemyopenapi.com/svg-generator?score=${report.results.simpleReport.score}\" width="150px" style="width:150px;"/></p>`
         )
         .addRaw(`<p style="margin-top:20px;">`)
         .addRaw(
