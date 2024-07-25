@@ -25169,6 +25169,7 @@ const core = __importStar(__nccwpck_require__(2186));
 const node_fs_1 = __nccwpck_require__(7561);
 const promises_1 = __nccwpck_require__(3977);
 const mime_types_1 = __nccwpck_require__(3583);
+const failMark = '\x1b[31m✖\x1b[0m';
 /**
  * The main function for the action.
  * @returns {Promise<void>} Resolves when the action is complete.
@@ -25246,10 +25247,14 @@ async function run() {
                     core.setFailed(`Failed to parse OpenAPI lint results. Error: ${error}`);
                 }
             }
+            if (totalErrors > 0 || totalWarnings > 0) {
+                const totalProblems = totalErrors + totalWarnings;
+                core.debug(`${failMark} ${totalProblems} problems (${totalErrors} errors, ${totalWarnings} warnings)`);
+            }
             const summary = core.summary.addHeading(`RMOA lint report`, 2);
             summary
-                .addRaw('<p style="text-align:center;">')
-                .addRaw(`<img src=\"https://api.ratemyopenapi.com/svg-generator?score=${report.results.simpleReport.score}\" width="150px" style="width:150px;"/>`)
+                .addRaw('<p align="center">')
+                .addRaw(`<img src="https://api.ratemyopenapi.com/svg-generator?score=${report.results.simpleReport.score}" width="150px" style="width:150px;"/>`)
                 .addRaw('</p>')
                 .addRaw(`<p style="margin-top:20px;">`)
                 .addRaw(`The overall score is <strong>${report.results.simpleReport.score}</strong>. The following table provides a breakdown of the lint results per category for <strong>${openApiFilePath}</strong>.\n`)

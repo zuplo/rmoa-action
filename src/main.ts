@@ -5,6 +5,7 @@ import { lookup } from 'mime-types'
 import { APIResponse } from './interfaces'
 import { ApiError } from '@zuplo/errors'
 
+const failMark = '\x1b[31m✖\x1b[0m'
 /**
  * The main function for the action.
  * @returns {Promise<void>} Resolves when the action is complete.
@@ -97,11 +98,18 @@ export async function run(): Promise<void> {
         }
       }
 
+      if (totalErrors > 0 || totalWarnings > 0) {
+        const totalProblems = totalErrors + totalWarnings
+        core.debug(
+          `${failMark} ${totalProblems} problems (${totalErrors} errors, ${totalWarnings} warnings)`
+        )
+      }
+
       const summary = core.summary.addHeading(`RMOA lint report`, 2)
       summary
-        .addRaw('<p style="text-align:center;">')
+        .addRaw('<p align="center">')
         .addRaw(
-          `<img src=\"https://api.ratemyopenapi.com/svg-generator?score=${report.results.simpleReport.score}\" width="150px" style="width:150px;"/>`
+          `<img src="https://api.ratemyopenapi.com/svg-generator?score=${report.results.simpleReport.score}" width="150px" style="width:150px;"/>`
         )
         .addRaw('</p>')
         .addRaw(`<p style="margin-top:20px;">`)

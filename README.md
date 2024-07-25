@@ -1,5 +1,12 @@
 # Rate My OpenAPI GitHub Action
 
+<p align="center">
+  <a href="https://ratemyopenapi.com/">
+    <img src="https://cdn.zuplo.com/static/logos/logo.svg" height="50">
+    <h3 align="center">Rate My Open API</h3>
+  </a>
+</p>
+
 This action provides the following functionality for GitHub Actions users:
 
 - Run the Rate My OpenAPI rules on an OpenAPI spec file
