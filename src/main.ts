@@ -118,16 +118,49 @@ export async function run(): Promise<void> {
         )
         .addRaw('</p>')
 
-      summary.addRaw(`<table style="border-collapse: collapse; border: none;">
-  <tr style="border:none">
-    <td style="border:none">
-      <img src="https://api.ratemyopenapi.com/svg-generator?score=${report.results.simpleReport.docsScore}" width="100px" style="width:100px;"/>
-    </td>
-    <td style="border:none">
-      <p><h3>Docs</h3><span>${report.results.fullReport.docsIssues.length} issues</span></p>
-    </td>
-  </tr>
-</table>`)
+      summary
+        .addRaw('<table style="border-collapse: collapse; border: none;">')
+        .addRaw(
+          `<tr style="border:none">
+            <td style="border:none">
+              <img src="https://api.ratemyopenapi.com/svg-generator?score=${report.results.simpleReport.docsScore}" width="100px" style="width:100px;"/>
+            </td>
+            <td style="border:none">
+              <p><h3>Docs</h3><span>${report.results.fullReport.docsIssues.length} issues</span></p>
+            </td>
+          </tr>`
+        )
+        .addRaw(
+          `<tr style="border:none">
+            <td style="border:none">
+              <img src="https://api.ratemyopenapi.com/svg-generator?score=${report.results.simpleReport.completenessScore}" width="100px" style="width:100px;"/>
+            </td>
+            <td style="border:none">
+              <p><h3>Completeness</h3><span>${report.results.fullReport.completenessIssues.length} issues</span></p>
+            </td>
+          </tr>`
+        )
+        .addRaw(
+          `<tr style="border:none">
+            <td style="border:none">
+              <img src="https://api.ratemyopenapi.com/svg-generator?score=${report.results.simpleReport.sdkGenerationScore}" width="100px" style="width:100px;"/>
+            </td>
+            <td style="border:none">
+              <p><h3>SDK Generation</h3><span>${report.results.fullReport.sdkGenerationIssues.length} issues</span></p>
+            </td>
+          </tr>`
+        )
+        .addRaw(
+          `<tr style="border:none">
+            <td style="border:none">
+              <img src="https://api.ratemyopenapi.com/svg-generator?score=${report.results.simpleReport.securityScore}" width="100px" style="width:100px;"/>
+            </td>
+            <td style="border:none">
+              <p><h3>Security</h3><span>${report.results.fullReport.securityIssues.length} issues</span></p>
+            </td>
+          </tr>`
+        )
+        .addRaw('</table>')
 
       summary
         .addRaw('<p>')
