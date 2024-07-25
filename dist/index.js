@@ -25248,7 +25248,9 @@ async function run() {
             }
             const summary = core.summary.addHeading(`RMOA lint report`, 2);
             summary
-                .addRaw(`<p style="text-align:center;"><img src=\"https://api.ratemyopenapi.com/svg-generator?score=${report.results.simpleReport.score}\" width="150px" style="width:150px;"/></p>`)
+                .addRaw('<p style="text-align:center;">')
+                .addRaw(`<img src=\"https://api.ratemyopenapi.com/svg-generator?score=${report.results.simpleReport.score}\" width="150px" style="width:150px;"/>`)
+                .addRaw('</p>')
                 .addRaw(`<p style="margin-top:20px;">`)
                 .addRaw(`The overall score is <strong>${report.results.simpleReport.score}</strong>. The following table provides a breakdown of the lint results per category for <strong>${openApiFilePath}</strong>.\n`)
                 .addRaw('</p>');
