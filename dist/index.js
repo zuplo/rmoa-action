@@ -25249,7 +25249,7 @@ async function run() {
             }
             if (totalErrors > 0 || totalWarnings > 0) {
                 const totalProblems = totalErrors + totalWarnings;
-                core.debug(`${failMark} ${totalProblems} problems (${totalErrors} errors, ${totalWarnings} warnings)`);
+                core.info(`${failMark} ${totalProblems} problems (${totalErrors} errors, ${totalWarnings} warnings)`);
             }
             const summary = core.summary.addHeading(`RMOA lint report`, 2);
             summary
