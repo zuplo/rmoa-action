@@ -13,6 +13,15 @@ export async function run(): Promise<void> {
   try {
     const openApiFilePath: string = core.getInput('filepath')
     const apikey: string = core.getInput('apikey')
+    const maxWarnings: number = core.getInput('max-warnings')
+      ? parseInt(core.getInput('max-warnings'), 10)
+      : 5
+    const maxErrors: number = core.getInput('max-errors')
+      ? parseInt(core.getInput('max-errors'), 10)
+      : 0
+    const minimumScore: number = core.getInput('minimum-score')
+      ? parseInt(core.getInput('minimum-score'), 10)
+      : 80
 
     if (!existsSync(openApiFilePath)) {
       core.setFailed(
@@ -50,11 +59,14 @@ export async function run(): Promise<void> {
 
       const report = (await fileUploadResults.json()) as APIResponse
 
+      let totalErrors = 0
+      let totalWarnings = 0
       try {
         for (const issue of report.results.fullReport.issues) {
           core.debug(`${openApiFilePath}`)
 
           if (issue.severity === 0) {
+            totalErrors++
             core.error(issue.message, {
               file: openApiFilePath,
               startLine: issue.range.start.line,
@@ -63,6 +75,7 @@ export async function run(): Promise<void> {
               endColumn: issue.range.end.character
             })
           } else {
+            totalWarnings++
             core.warning(issue.message, {
               file: openApiFilePath,
               startLine: issue.range.start.line,
@@ -86,6 +99,9 @@ export async function run(): Promise<void> {
 
       const summary = core.summary.addHeading(`RMOA lint report`, 2)
       summary
+        .addRaw(
+          `<img src=\"https://api.ratemyopenapi.com/svg-generator?score=${report.results.simpleReport.score}\"/>`
+        )
         .addRaw(`<p>`)
         .addRaw(
           `The overall score is <strong>${report.results.simpleReport.score}</strong>. The following table provides a breakdown of the lint results per category for <strong>${openApiFilePath}</strong>.\n`
@@ -139,6 +155,24 @@ export async function run(): Promise<void> {
       )
 
       await summary.write()
+
+      if (totalWarnings > maxWarnings) {
+        core.setFailed(
+          `The total number of warnings (${totalWarnings}) exceeds the maximum amout of warnings allowed (${maxWarnings})`
+        )
+      }
+
+      if (totalErrors > maxErrors) {
+        core.setFailed(
+          `The total number of errors (${totalErrors}) exceeds the maximum amout of errors allowed (${maxErrors})`
+        )
+      }
+
+      if (minimumScore > report.results.simpleReport.score) {
+        core.setFailed(
+          `The minimum passing score is '${minimumScore}' and the lint score for this run is '${report.results.simpleReport.score}'`
+        )
+      }
     } catch (error) {
       if (error instanceof Error) {
         core.setFailed(`fail: ${error.message}`)
