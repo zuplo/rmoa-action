@@ -25254,12 +25254,26 @@ async function run() {
             const summary = core.summary.addHeading(`RMOA lint report`, 2);
             summary
                 .addRaw('<p align="center">')
-                .addRaw(`<img src="https://api.ratemyopenapi.com/svg-generator?score=${report.results.simpleReport.score}" width="150px" style="width:150px;"/>`)
+                .addRaw(`<img src="https://api.ratemyopenapi.com/svg-generator?score=${report.results.simpleReport.score}" width="150px" style="width:150px;" alt="Overall score is ${report.results.simpleReport.score}"/>`)
                 .addRaw('</p>')
                 .addRaw(`<p style="margin-top:20px;">`)
                 .addRaw(`The overall score is <strong>${report.results.simpleReport.score}</strong>. The following table provides a breakdown of the lint results per category for <strong>${openApiFilePath}</strong>.\n`)
                 .addRaw('</p>');
             summary.addRaw(`<div style="width:100%;height:100px;"><div style="width:50%;display:inline-block;height:100%;"><img src="https://api.ratemyopenapi.com/svg-generator?score=${report.results.simpleReport.docsScore}" width="100px" style="width:100px;"/></div> <div style="width:30%;display:inline-block;height:100%;font-size:15px;margin-top:25px"><h3>Docs<h3/><p>${report.results.fullReport.docsIssues.length}</p></div>`);
+            summary.addRaw(`<div style="display: flex; align-items: center;">
+  <img src="https://api.ratemyopenapi.com/svg-generator?score=${report.results.simpleReport.docsScore}" width="100px" style="width:100px;"/>
+  <p>This is a paragraph next to the image. You can add more text here as needed. The image and the paragraph are displayed side by side.</p>
+</div>`);
+            summary.addRaw(`<table>
+  <tr>
+    <td>
+      <img src="https://api.ratemyopenapi.com/svg-generator?score=${report.results.simpleReport.docsScore}" width="100px" style="width:100px;"/>
+    </td>
+    <td>
+      <p>This is a paragraph next to the image. You can add more text here as needed. The image and the paragraph are displayed side by side.</p>
+    </td>
+  </tr>
+</table>`);
             /*
             summary
               .addRaw('<p align="center" style="text-align:center;">')
