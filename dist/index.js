@@ -25169,6 +25169,7 @@ const core = __importStar(__nccwpck_require__(2186));
 const node_fs_1 = __nccwpck_require__(7561);
 const promises_1 = __nccwpck_require__(3977);
 const mime_types_1 = __nccwpck_require__(3583);
+const failMark = '\x1b[31m✖\x1b[0m';
 /**
  * The main function for the action.
  * @returns {Promise<void>} Resolves when the action is complete.
@@ -25246,46 +25247,53 @@ async function run() {
                     core.setFailed(`Failed to parse OpenAPI lint results. Error: ${error}`);
                 }
             }
+            if (totalErrors > 0 || totalWarnings > 0) {
+                const totalProblems = totalErrors + totalWarnings;
+                core.debug(`${failMark} ${totalProblems} problems (${totalErrors} errors, ${totalWarnings} warnings)`);
+            }
             const summary = core.summary.addHeading(`RMOA lint report`, 2);
             summary
-                .addRaw(`<img src=\"https://api.ratemyopenapi.com/svg-generator?score=${report.results.simpleReport.score}\"/>`)
-                .addRaw(`<p>`)
+                .addRaw('<p align="center">')
+                .addRaw(`<img src="https://api.ratemyopenapi.com/svg-generator?score=${report.results.simpleReport.score}" width="150px" style="width:150px;" alt="Overall score is ${report.results.simpleReport.score}"/>`)
+                .addRaw('</p>')
+                .addRaw(`<p align="center" style="margin-top:20px;margin-bottom:20px;">`)
                 .addRaw(`The overall score is <strong>${report.results.simpleReport.score}</strong>. The following table provides a breakdown of the lint results per category for <strong>${openApiFilePath}</strong>.\n`)
                 .addRaw('</p>');
             summary
-                .addRaw('<p>')
-                .addTable([
-                [
-                    { data: 'Category', header: true },
-                    { data: 'Score', header: true },
-                    { data: 'Issues', header: true }
-                ],
-                [
-                    { data: 'Docs' },
-                    { data: report.results.simpleReport.docsScore.toString() },
-                    { data: report.results.fullReport.docsIssues.length.toString() }
-                ],
-                [
-                    { data: 'Completeness' },
-                    { data: report.results.simpleReport.completenessScore.toString() },
-                    {
-                        data: report.results.fullReport.completenessIssues.length.toString()
-                    }
-                ],
-                [
-                    { data: 'SDK Generation' },
-                    { data: report.results.simpleReport.sdkGenerationScore.toString() },
-                    {
-                        data: report.results.fullReport.sdkGenerationIssues.length.toString()
-                    }
-                ],
-                [
-                    { data: 'Security' },
-                    { data: report.results.simpleReport.securityScore.toString() },
-                    { data: report.results.fullReport.securityIssues.length.toString() }
-                ]
-            ])
-                .addRaw('</p>');
+                .addRaw('<table align="center" style="border-collapse: collapse; border: none;">')
+                .addRaw(`<tr style="border:none">
+            <td style="border:none">
+              <img src="https://api.ratemyopenapi.com/svg-generator?score=${report.results.simpleReport.docsScore}" width="100px" style="width:100px;"/>
+            </td>
+            <td style="border:none">
+              <p><h3>Docs</h3><span>${report.results.fullReport.docsIssues.length} issues</span></p>
+            </td>
+          </tr>`)
+                .addRaw(`<tr style="border:none">
+            <td style="border:none">
+              <img src="https://api.ratemyopenapi.com/svg-generator?score=${report.results.simpleReport.completenessScore}" width="100px" style="width:100px;"/>
+            </td>
+            <td style="border:none">
+              <p><h3>Completeness</h3><span>${report.results.fullReport.completenessIssues.length} issues</span></p>
+            </td>
+          </tr>`)
+                .addRaw(`<tr style="border:none">
+            <td style="border:none">
+              <img src="https://api.ratemyopenapi.com/svg-generator?score=${report.results.simpleReport.sdkGenerationScore}" width="100px" style="width:100px;"/>
+            </td>
+            <td style="border:none">
+              <p><h3>SDK Generation</h3><span>${report.results.fullReport.sdkGenerationIssues.length} issues</span></p>
+            </td>
+          </tr>`)
+                .addRaw(`<tr style="border:none">
+            <td style="border:none">
+              <img src="https://api.ratemyopenapi.com/svg-generator?score=${report.results.simpleReport.securityScore}" width="100px" style="width:100px;"/>
+            </td>
+            <td style="border:none">
+              <p><h3>Security</h3><span>${report.results.fullReport.securityIssues.length} issues</span></p>
+            </td>
+          </tr>`)
+                .addRaw('</table>');
             summary
                 .addRaw('<p> ')
                 .addDetails('Summary', report.results.simpleReport.shortSummary)
