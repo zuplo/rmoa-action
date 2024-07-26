@@ -6,6 +6,22 @@ import { APIResponse } from './interfaces'
 import { ApiError } from '@zuplo/errors'
 
 const failMark = '\x1b[31m✖\x1b[0m'
+
+function generateScoreTableRow(
+  categoryName: string,
+  score: number,
+  numIssues: number
+): string {
+  return `<tr style="border:none">
+      <td style="border:none">
+        <img src="https://api.ratemyopenapi.com/svg-generator?score=${score}" width="100px" style="width:100px;"/>
+      </td>
+      <td style="border:none">
+        <p><h3>${categoryName}</h3><span>${numIssues} issues</span></p>
+      </td>
+    </tr>`
+}
+
 /**
  * The main function for the action.
  * @returns {Promise<void>} Resolves when the action is complete.
@@ -14,12 +30,12 @@ export async function run(): Promise<void> {
   try {
     const openApiFilePath: string = core.getInput('filepath')
     const apikey: string = core.getInput('apikey')
-    const maxWarnings: number = core.getInput('max-warnings')
+    const maxWarnings: number | undefined = core.getInput('max-warnings')
       ? parseInt(core.getInput('max-warnings'), 10)
-      : 5
-    const maxErrors: number = core.getInput('max-errors')
+      : undefined
+    const maxErrors: number | undefined = core.getInput('max-errors')
       ? parseInt(core.getInput('max-errors'), 10)
-      : 0
+      : undefined
     const minimumScore: number = core.getInput('minimum-score')
       ? parseInt(core.getInput('minimum-score'), 10)
       : 80
@@ -125,44 +141,32 @@ export async function run(): Promise<void> {
           '<table align="center" style="border-collapse: collapse; border: none;">'
         )
         .addRaw(
-          `<tr style="border:none">
-            <td style="border:none">
-              <img src="https://api.ratemyopenapi.com/svg-generator?score=${report.results.simpleReport.docsScore}" width="100px" style="width:100px;"/>
-            </td>
-            <td style="border:none">
-              <p><h3>Docs</h3><span>${report.results.fullReport.docsIssues.length} issues</span></p>
-            </td>
-          </tr>`
+          generateScoreTableRow(
+            'Docs',
+            report.results.simpleReport.docsScore,
+            report.results.fullReport.docsIssues.length
+          )
         )
         .addRaw(
-          `<tr style="border:none">
-            <td style="border:none">
-              <img src="https://api.ratemyopenapi.com/svg-generator?score=${report.results.simpleReport.completenessScore}" width="100px" style="width:100px;"/>
-            </td>
-            <td style="border:none">
-              <p><h3>Completeness</h3><span>${report.results.fullReport.completenessIssues.length} issues</span></p>
-            </td>
-          </tr>`
+          generateScoreTableRow(
+            'Completeness',
+            report.results.simpleReport.completenessScore,
+            report.results.fullReport.completenessIssues.length
+          )
         )
         .addRaw(
-          `<tr style="border:none">
-            <td style="border:none">
-              <img src="https://api.ratemyopenapi.com/svg-generator?score=${report.results.simpleReport.sdkGenerationScore}" width="100px" style="width:100px;"/>
-            </td>
-            <td style="border:none">
-              <p><h3>SDK Generation</h3><span>${report.results.fullReport.sdkGenerationIssues.length} issues</span></p>
-            </td>
-          </tr>`
+          generateScoreTableRow(
+            'SDK Generation',
+            report.results.simpleReport.sdkGenerationScore,
+            report.results.fullReport.sdkGenerationIssues.length
+          )
         )
         .addRaw(
-          `<tr style="border:none">
-            <td style="border:none">
-              <img src="https://api.ratemyopenapi.com/svg-generator?score=${report.results.simpleReport.securityScore}" width="100px" style="width:100px;"/>
-            </td>
-            <td style="border:none">
-              <p><h3>Security</h3><span>${report.results.fullReport.securityIssues.length} issues</span></p>
-            </td>
-          </tr>`
+          generateScoreTableRow(
+            'Security',
+            report.results.simpleReport.securityScore,
+            report.results.fullReport.securityIssues.length
+          )
         )
         .addRaw('</table>')
 
@@ -179,13 +183,13 @@ export async function run(): Promise<void> {
 
       await summary.write()
 
-      if (totalWarnings > maxWarnings) {
+      if (maxWarnings && totalWarnings > maxWarnings) {
         core.setFailed(
           `The total number of warnings (${totalWarnings}) exceeds the maximum amout of warnings allowed (${maxWarnings})`
         )
       }
 
-      if (totalErrors > maxErrors) {
+      if (maxErrors && totalErrors > maxErrors) {
         core.setFailed(
           `The total number of errors (${totalErrors}) exceeds the maximum amout of errors allowed (${maxErrors})`
         )

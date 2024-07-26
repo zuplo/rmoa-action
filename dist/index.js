@@ -25170,6 +25170,16 @@ const node_fs_1 = __nccwpck_require__(7561);
 const promises_1 = __nccwpck_require__(3977);
 const mime_types_1 = __nccwpck_require__(3583);
 const failMark = '\x1b[31m✖\x1b[0m';
+function generateScoreTableRow(categoryName, score, numIssues) {
+    return `<tr style="border:none">
+      <td style="border:none">
+        <img src="https://api.ratemyopenapi.com/svg-generator?score=${score}" width="100px" style="width:100px;"/>
+      </td>
+      <td style="border:none">
+        <p><h3>${categoryName}</h3><span>${numIssues} issues</span></p>
+      </td>
+    </tr>`;
+}
 /**
  * The main function for the action.
  * @returns {Promise<void>} Resolves when the action is complete.
@@ -25180,10 +25190,10 @@ async function run() {
         const apikey = core.getInput('apikey');
         const maxWarnings = core.getInput('max-warnings')
             ? parseInt(core.getInput('max-warnings'), 10)
-            : 5;
+            : undefined;
         const maxErrors = core.getInput('max-errors')
             ? parseInt(core.getInput('max-errors'), 10)
-            : 0;
+            : undefined;
         const minimumScore = core.getInput('minimum-score')
             ? parseInt(core.getInput('minimum-score'), 10)
             : 80;
@@ -25261,38 +25271,10 @@ async function run() {
                 .addRaw('</p>');
             summary
                 .addRaw('<table align="center" style="border-collapse: collapse; border: none;">')
-                .addRaw(`<tr style="border:none">
-            <td style="border:none">
-              <img src="https://api.ratemyopenapi.com/svg-generator?score=${report.results.simpleReport.docsScore}" width="100px" style="width:100px;"/>
-            </td>
-            <td style="border:none">
-              <p><h3>Docs</h3><span>${report.results.fullReport.docsIssues.length} issues</span></p>
-            </td>
-          </tr>`)
-                .addRaw(`<tr style="border:none">
-            <td style="border:none">
-              <img src="https://api.ratemyopenapi.com/svg-generator?score=${report.results.simpleReport.completenessScore}" width="100px" style="width:100px;"/>
-            </td>
-            <td style="border:none">
-              <p><h3>Completeness</h3><span>${report.results.fullReport.completenessIssues.length} issues</span></p>
-            </td>
-          </tr>`)
-                .addRaw(`<tr style="border:none">
-            <td style="border:none">
-              <img src="https://api.ratemyopenapi.com/svg-generator?score=${report.results.simpleReport.sdkGenerationScore}" width="100px" style="width:100px;"/>
-            </td>
-            <td style="border:none">
-              <p><h3>SDK Generation</h3><span>${report.results.fullReport.sdkGenerationIssues.length} issues</span></p>
-            </td>
-          </tr>`)
-                .addRaw(`<tr style="border:none">
-            <td style="border:none">
-              <img src="https://api.ratemyopenapi.com/svg-generator?score=${report.results.simpleReport.securityScore}" width="100px" style="width:100px;"/>
-            </td>
-            <td style="border:none">
-              <p><h3>Security</h3><span>${report.results.fullReport.securityIssues.length} issues</span></p>
-            </td>
-          </tr>`)
+                .addRaw(generateScoreTableRow('Docs', report.results.simpleReport.docsScore, report.results.fullReport.docsIssues.length))
+                .addRaw(generateScoreTableRow('Completeness', report.results.simpleReport.completenessScore, report.results.fullReport.completenessIssues.length))
+                .addRaw(generateScoreTableRow('SDK Generation', report.results.simpleReport.sdkGenerationScore, report.results.fullReport.sdkGenerationIssues.length))
+                .addRaw(generateScoreTableRow('Security', report.results.simpleReport.securityScore, report.results.fullReport.securityIssues.length))
                 .addRaw('</table>');
             summary
                 .addRaw('<p> ')
@@ -25302,10 +25284,10 @@ async function run() {
             summary.addBreak();
             summary.addRaw(`View details of your report at <a href="${report.reportUrl}">${report.reportUrl}</a>.\n`);
             await summary.write();
-            if (totalWarnings > maxWarnings) {
+            if (maxWarnings && totalWarnings > maxWarnings) {
                 core.setFailed(`The total number of warnings (${totalWarnings}) exceeds the maximum amout of warnings allowed (${maxWarnings})`);
             }
-            if (totalErrors > maxErrors) {
+            if (maxErrors && totalErrors > maxErrors) {
                 core.setFailed(`The total number of errors (${totalErrors}) exceeds the maximum amout of errors allowed (${maxErrors})`);
             }
             if (minimumScore > report.results.simpleReport.score) {
