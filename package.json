@@ -1,5 +1,5 @@
 {
-  "name": "ramoa-action",
+  "name": "rmoa-action",
   "description": "GitHub Action to run RMOA lint rules on an OpenAPI spec",
   "version": "0.0.0",
   "author": "Zuplo",

@@ -1,4 +1,4 @@
-# Rate My OpenAPI Action
+# rmoa-action
 
 <p align="center">
   <a href="https://ratemyopenapi.com/">
@@ -7,10 +7,10 @@
   </a>
 </p>
 
-ramoa-action analyzes an OpenAPI definition file using the Rate My OpenAPI API,
+rmoa-action analyzes an OpenAPI definition file using the Rate My OpenAPI API,
 and reports the issues as console output, annotations and action summary.
 
-The goal of ramoa-action is to help you establish best practices for your
+The goal of rmoa-action is to help you establish best practices for your
 OpenAPI's definitions across multiple categories that include security,
 documentation and more.
 
@@ -31,7 +31,7 @@ See [action.yml](action.yml)
 <!-- start usage -->
 
 ```yaml
-- uses: zuplo/ramoa-action@v1
+- uses: zuplo/rmoa-action@v1
   with:
     # File containing the OpenAPI Spec to be linted.  Examples: my-api.oas.json, api-spec.yaml
     filepath: ''
@@ -56,7 +56,7 @@ See [action.yml](action.yml)
 ```yaml
 steps:
   - uses: actions/checkout@v4
-  - uses: zuplo/ramoa-action@v1
+  - uses: zuplo/rmoa-action@v1
     with:
       filepath: './my-api.json'
       apikey: ${{ secrets.RMOA_API_KEY }}

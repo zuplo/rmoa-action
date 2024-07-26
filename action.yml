@@ -1,4 +1,4 @@
-name: 'ramoa-action'
+name: 'Rate My OpenAPI Action'
 description: 'GitHub Action to run RMOA lint rules on an OpenAPI spec'
 author: 'Zuplo'
 
