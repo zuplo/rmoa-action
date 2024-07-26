@@ -1,4 +1,4 @@
-# ramoa-action
+# Rate My OpenAPI Action
 
 <p align="center">
   <a href="https://ratemyopenapi.com/">
