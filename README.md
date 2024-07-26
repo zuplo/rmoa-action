@@ -39,10 +39,10 @@ See [action.yml](action.yml)
     # The RMOA API Key issued when creating a user on https://api.ratemyopenapi.com/docs
     apikey: ''
 
-    # The maximum number of warnings allowed before labeling the run as failed. Default is 5.
+    # The maximum number of warnings allowed before labeling the run as failed.
     max-warnings: ''
 
-    # The maximum number of errors allowed before labeling the run as failed. Default is 0.
+    # The maximum number of errors allowed before labeling the run as failed.
     max-errors: ''
 
     # The minimum score (0 - 100) to label a lint run as successful/passing. Default is 80.

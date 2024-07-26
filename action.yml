@@ -17,14 +17,10 @@ inputs:
     required: true
   max-warnings:
     description:
-      'The maximum number of warnings allowed before labeling the run as failed.
-      Default is 5.'
-    default: '5'
+      'The maximum number of warnings allowed before labeling the run as failed.'
   max-errors:
     description:
-      'The maximum number of errors allowed before labeling the run as failed.
-      Default is 0.'
-    default: '0'
+      'The maximum number of errors allowed before labeling the run as failed.'
   minimum-score:
     description:
       'The minimum score (0 - 100) to label a lint run as successful/passing.
