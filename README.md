@@ -56,7 +56,7 @@ Pull Requests and Pushes to ensure continuous quality monitoring.
 
 You will need an API key as the GitHub Action uses the Rate My OpenAPI APIs
 which require the use of an API Key. You can sign up for free at
-(https://api.ratemyopenapi.com/docs)[https://api.ratemyopenapi.com/docs] to get
+[https://api.ratemyopenapi.com/docs](https://api.ratemyopenapi.com/docs) to get
 your API Key.
 
 ### Basic Setup
