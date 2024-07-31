@@ -25198,7 +25198,7 @@ async function run() {
             ? parseInt(core.getInput('minimum-score'), 10)
             : 80;
         if (!(0, node_fs_1.existsSync)(openApiFilePath)) {
-            core.setFailed(`The Open API file path provided does not exist: ${openApiFilePath}. Please specify an existing Open API file and try again.`);
+            core.setFailed(`The OpenAPI file path provided does not exist: ${openApiFilePath}. Please specify an existing OpenAPI file and try again.`);
         }
         // Read the file as a buffer
         const data = await (0, promises_1.readFile)(openApiFilePath, 'utf-8');
