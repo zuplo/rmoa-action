@@ -42,7 +42,7 @@ export async function run(): Promise<void> {
 
     if (!existsSync(openApiFilePath)) {
       core.setFailed(
-        `The Open API file path provided does not exist: ${openApiFilePath}. Please specify an existing Open API file and try again.`
+        `The OpenAPI file path provided does not exist: ${openApiFilePath}. Please specify an existing OpenAPI file and try again.`
       )
     }
 

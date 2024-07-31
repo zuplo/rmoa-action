@@ -1,15 +1,8 @@
 # rmoa-action
 
-<p align="center">
-  <a href="https://ratemyopenapi.com/">
-    <img src="https://cdn.zuplo.com/static/logos/logo.svg" height="50">
-    <h3 align="center">Rate My Open API</h3>
-  </a>
-</p>
-
-At Zuplo we believe that the better the quality of an OpenAPI document, the
-better the developer experience will be for the consumers of that API. This
-experience is important for the success of an API.
+At [Zuplo](https://www.zuplo.com) we believe that the better the quality of an
+OpenAPI document, the better the developer experience will be for the consumers
+of that API. This experience is important for the success of an API.
 
 Rate My OpenAPI is a suite of tools designed to help software developers using
 OpenAPI to meet high standards of quality and usability when designing and
