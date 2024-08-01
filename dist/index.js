@@ -25214,7 +25214,8 @@ async function run() {
                 method: 'POST',
                 body: formData,
                 headers: {
-                    Authorization: `Bearer ${apikey}`
+                    Authorization: `Bearer ${apikey}`,
+                    'User-Agent': 'rmoa-gh-action-v1'
                 }
             });
             if (fileUploadResults.status !== 200) {

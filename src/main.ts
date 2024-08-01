@@ -64,7 +64,8 @@ export async function run(): Promise<void> {
           method: 'POST',
           body: formData,
           headers: {
-            Authorization: `Bearer ${apikey}`
+            Authorization: `Bearer ${apikey}`,
+            'User-Agent': 'rmoa-gh-action-v1'
           }
         }
       )
