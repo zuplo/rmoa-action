@@ -114,24 +114,27 @@ steps:
 ```
 
 ### Example
-This example sets `rmoa-action` up in a workflow that will run on every pull request created on the repository. The pull request cannot be merged until the Open API specificaion in the `my-api.json` file reaches a minimum score of 80.
+
+This example sets `rmoa-action` up in a workflow that will run on every pull
+request created on the repository. The pull request cannot be merged until the
+Open API specificaion in the `my-api.json` file reaches a minimum score of 80.
 
 ```yaml
 on:
   pull_request:
-    branches: [ $default-branch ]
+    branches: [$default-branch]
 
 jobs:
   rate-my-open-api:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v4
-    - uses: zuplo/rmoa-action@v1
-      with:
-        filepath: './my-api.json'
-        apikey: ${{ secrets.RMOA_API_KEY }}
-    - name: Rate My Open API
-      run: rmoa lint 
+      - uses: actions/checkout@v4
+      - uses: zuplo/rmoa-action@v1
+        with:
+          filepath: './my-api.json'
+          apikey: ${{ secrets.RMOA_API_KEY }}
+      - name: Rate My Open API
+        run: rmoa lint
 ```
 
 See [action.yml](action.yml)
