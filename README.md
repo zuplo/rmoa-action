@@ -113,6 +113,23 @@ steps:
     minimum-score: ''
 ```
 
+### Private Setup
+
+For private repos, this will only pass your OpenAPI spec on to `rmoa-action`
+and not your entire repo.
+
+```yaml
+steps:
+  - uses: actions/checkout@v4
+    with:
+      sparse-checkout: './my-api.json'
+      sparse-checkout-cone-mode: false
+  - uses: zuplo/rmoa-action@v1
+    with:
+      filepath: './my-api.json'
+      apikey: ${{ secrets.RMOA_API_KEY }}
+```
+
 ### Example
 
 This example sets `rmoa-action` up in a workflow that will run on every pull
