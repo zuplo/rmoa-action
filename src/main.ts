@@ -44,6 +44,7 @@ export async function run(): Promise<void> {
       core.setFailed(
         `The OpenAPI file path provided does not exist: ${openApiFilePath}. Please specify an existing OpenAPI file and try again.`
       )
+      return
     }
 
     // Read the file as a buffer
@@ -70,9 +71,16 @@ export async function run(): Promise<void> {
         }
       )
 
-      if (fileUploadResults.status !== 200) {
-        const error = (await fileUploadResults.json()) as ApiError
-        core.setFailed(`${error.detail ?? error.message}`)
+      if (!fileUploadResults.ok) {
+        let errorMessage = `API request failed with status ${fileUploadResults.status}`
+        try {
+          const error = (await fileUploadResults.json()) as ApiError
+          errorMessage = error.detail ?? error.message ?? errorMessage
+        } catch {
+          // If we can't parse the error response as JSON, use the default message
+        }
+        core.setFailed(errorMessage)
+        return
       }
 
       const report = (await fileUploadResults.json()) as APIResponse

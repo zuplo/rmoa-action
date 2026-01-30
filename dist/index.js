@@ -25199,6 +25199,7 @@ async function run() {
             : 80;
         if (!(0, node_fs_1.existsSync)(openApiFilePath)) {
             core.setFailed(`The OpenAPI file path provided does not exist: ${openApiFilePath}. Please specify an existing OpenAPI file and try again.`);
+            return;
         }
         // Read the file as a buffer
         const data = await (0, promises_1.readFile)(openApiFilePath, 'utf-8');
@@ -25218,9 +25219,17 @@ async function run() {
                     'User-Agent': 'rmoa-gh-action-v1'
                 }
             });
-            if (fileUploadResults.status !== 200) {
-                const error = (await fileUploadResults.json());
-                core.setFailed(`${error.detail ?? error.message}`);
+            if (!fileUploadResults.ok) {
+                let errorMessage = `API request failed with status ${fileUploadResults.status}`;
+                try {
+                    const error = (await fileUploadResults.json());
+                    errorMessage = error.detail ?? error.message ?? errorMessage;
+                }
+                catch {
+                    // If we can't parse the error response as JSON, use the default message
+                }
+                core.setFailed(errorMessage);
+                return;
             }
             const report = (await fileUploadResults.json());
             let totalErrors = 0;
